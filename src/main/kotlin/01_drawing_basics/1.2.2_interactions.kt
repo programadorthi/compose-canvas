@@ -84,7 +84,7 @@ fun main() = Window {
                 drawRect(color = hslColor)
             }
             Text(
-                text = "RGB = %x".format(hslColor.toArgb()),
+                text = " RGB = %x ".format(hslColor.toArgb()),
                 color = Color.White,
                 fontSize = 24.sp,
                 modifier = Modifier
@@ -114,7 +114,7 @@ fun main() = Window {
                 drawRect(color = hsvColor)
             }
             Text(
-                text = "RGB = %x".format(hsvColor.toArgb()),
+                text = " RGB = %x ".format(hsvColor.toArgb()),
                 color = Color.White,
                 fontSize = 24.sp,
                 modifier = Modifier
