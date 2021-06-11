@@ -1,4 +1,4 @@
-# Compose Desktop Canvas
+# Compose Desktop Canvas [in progress...]
 A [SkiaSharp tutorial](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/) built using Jetpack Compose
 
 ## With great power comes great responsibility
