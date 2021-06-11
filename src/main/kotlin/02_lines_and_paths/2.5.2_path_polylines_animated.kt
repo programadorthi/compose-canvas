@@ -6,14 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import kotlinx.coroutines.delay
-import org.jetbrains.skija.Paint
-import org.jetbrains.skija.PaintMode
-import org.jetbrains.skija.Path
-import org.jetbrains.skija.PathEffect
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.min
@@ -32,27 +28,25 @@ fun main() = Window {
         }
     }
     Canvas(modifier = Modifier.fillMaxSize()) {
-        drawIntoCanvas { cvs ->
-            val canvas = cvs.nativeCanvas
-            val radius = min(center.x, center.y)
-            val path = Path()
-            for (angle in 0 until 3600) {
-                val scaledRadius = radius * angle / 3600
-                val radians = PI * angle / 180
-                val x = center.x + scaledRadius * cos(radians)
-                val y = center.y + scaledRadius * sin(radians)
-                when (angle) {
-                    0 -> path.moveTo(x.toFloat(), y.toFloat())
-                    else -> path.lineTo(x.toFloat(), y.toFloat())
-                }
+        val radius = min(center.x, center.y)
+        val path = Path()
+        for (angle in 0 until 3600) {
+            val scaledRadius = radius * angle / 3600
+            val radians = PI * angle / 180
+            val x = center.x + scaledRadius * cos(radians)
+            val y = center.y + scaledRadius * sin(radians)
+            when (angle) {
+                0 -> path.moveTo(x.toFloat(), y.toFloat())
+                else -> path.lineTo(x.toFloat(), y.toFloat())
             }
-            val paint = Paint().apply {
-                color = Color.Red.toArgb()
-                mode = PaintMode.STROKE
-                pathEffect = PathEffect.makeDash(floatArrayOf(5f, 5f), dashPhase)
-                strokeWidth = 5f
-            }
-            canvas.drawPath(path, paint)
         }
+        drawPath(
+            path = path,
+            color = Color.Red,
+            style = Stroke(
+                width = 5f,
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 5f), dashPhase)
+            )
+        )
     }
 }
