@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
 }
 
 tasks.withType<KotlinCompile>() {
