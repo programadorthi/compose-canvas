@@ -1,6 +1,5 @@
 package `03_transforms`
 
-import androidx.compose.desktop.Window
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,66 +12,69 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
 import org.jetbrains.skija.Font
 import org.jetbrains.skija.FontMgr
 import org.jetbrains.skija.Paint
 import org.jetbrains.skija.PaintMode
 
-fun main() = Window {
-    val font = remember {
-        FontMgr.getDefault()
-            .matchFamily("Arial")
-            .use { Font(it.getTypeface(0)) }
-    }
-    val textPaint = remember {
-        Paint().apply {
-            color = Color.Blue.toArgb()
-            mode = PaintMode.FILL
+fun main() = application {
+    Window(onCloseRequest = ::exitApplication) {
+        val font = remember {
+            FontMgr.getDefault()
+                .matchFamily("Arial")
+                .use { Font(it.getTypeface(0)) }
         }
-    }
-    val title = "Basic Rotate"
-    var rotation by remember { mutableStateOf(0f) }
-    Column {
-        Slider(
-            value = rotation,
-            valueRange = -360f..360f,
-            onValueChange = { value ->
-                rotation = value
+        val textPaint = remember {
+            Paint().apply {
+                color = Color.Blue.toArgb()
+                mode = PaintMode.FILL
             }
-        )
-        Text(
-            text = "Horizontal Scaling = %.1f".format(rotation),
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Canvas(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {
-            font.size = 100f
-
-            // Compose pivot is center by default
-            // To have a centered rotate version just remove pivot param below
-            rotate(
-                degrees = rotation
+        }
+        val title = "Basic Rotate"
+        var rotation by remember { mutableStateOf(0f) }
+        Column {
+            Slider(
+                value = rotation,
+                valueRange = -360f..360f,
+                onValueChange = { value ->
+                    rotation = value
+                }
+            )
+            Text(
+                text = "Horizontal Scaling = %.1f".format(rotation),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Canvas(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
             ) {
-                val canvas = drawContext.canvas.nativeCanvas
-                canvas.drawString(
-                    title,
-                    center.x,
-                    center.y,
-                    font,
-                    textPaint
-                )
+                font.size = 100f
+
+                // Compose pivot is center by default
+                // To have a centered rotate version just remove pivot param below
+                rotate(
+                    degrees = rotation
+                ) {
+                    val canvas = drawContext.canvas.nativeCanvas
+                    canvas.drawString(
+                        title,
+                        center.x,
+                        center.y,
+                        font,
+                        textPaint
+                    )
+                }
             }
         }
     }
